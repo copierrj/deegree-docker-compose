@@ -1,0 +1,16 @@
+services:
+  deegree:
+    image: tomcat:10-jdk17
+    ports:
+      - "8080:8080"
+    volumes:
+      - $HOME/.m2/repository/org/deegree/deegree-webservices/$DEEGREE_VERSION/deegree-webservices-$DEEGREE_VERSION.war:/usr/local/tomcat/webapps/deegree-webservices.war
+    depends_on:
+      - postgres
+
+  postgres:
+    build: postgis
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./sql/:/docker-entrypoint-initdb.d/
